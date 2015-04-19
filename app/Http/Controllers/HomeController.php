@@ -30,7 +30,37 @@ class HomeController extends Controller {
 	 */
 	public function index()
 	{
-		return view('home');
+            $participations = \App\Models\Participation::all();
+            $players = \App\Models\Player::all();
+                  
+            foreach($players as $player){
+                $c = $participations->where('player_id', $player->id);
+                $tabPlayers[] = $player->nom.'('.count($c).')';
+                $tabPlayersId[] = $player->id;
+                $tabCaves[] = $c->sum('cave');
+                $tabResultats[] = $c->sum('resultat');
+                $tabDiff[] = $c->sum('diff');
+            }
+            
+            $tabResult = new \Illuminate\Support\Collection();
+            for($i=0; $i<count($tabPlayers); $i++){
+                $tabResult->push(['player' => $tabPlayers[$i] , 'playerId' => $tabPlayersId[$i], 'cave' => $tabCaves[$i],
+                'resultat' => $tabResultats[$i], 'benefice' => $tabDiff[$i]]);
+            }
+            
+            $tabResult->sortByDesc('benefice');
+            $ar = ['chart' => ['type' => 'column'], 
+               'xAxis' => ['categories' => $tabPlayers],
+               'title' => ['text' => 'Résultats d\'ensemble'],
+               'series' => [
+                   ['name' => 'Bénéfice', 'data' => $tabDiff],
+                   ['name' => 'Caves', 'data' => $tabCaves],
+                   ['name' => 'Résultat', 'data' => $tabResultats]
+                ] 
+              ];
+            
+            $json = json_encode($ar);
+            return view('home', ['json' => $json, 'tabResult' => $tabResult]);
 	}
 
 }

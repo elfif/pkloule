@@ -22,11 +22,12 @@
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Poker stats</a>
+				<a class="navbar-brand" href="{{{ route('home') }}}">Poker stats</a>
 			</div>
-
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-			</div>
+                        <ul class="nav navbar-nav">
+                            <li><a href="{{{ route('NewPartie') }}}">Nouvelle Partie</a></li>
+                            <li><a href="{{{ route('NewPlayer') }}}">Nouveau Joueur</a></li>
+                        </ul>
 		</div>
 	</nav>
 
@@ -37,6 +38,7 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
         <script src="{{ asset('/js/jquery-ujs.js') }}"></script>
         <script src="http://code.highcharts.com/highcharts.js"></script>
+        <script src="http://code.highcharts.com/modules/data.js"></script>
         <script src="http://code.highcharts.com/modules/exporting.js"></script>
         <script src="{{ asset('/js/encoder.js') }}"></script>
         <script src="{{ asset('/js/app.js') }}"></script>

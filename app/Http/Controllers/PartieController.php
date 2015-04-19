@@ -27,50 +27,11 @@ class PartieController extends Controller {
     
     public function show($id){
         $partie = Partie::find($id);
-        $participations = $partie->participations;
-        $participations->load('player');
-        $pCave = $participations->sum('cave')/100;
-        $jsonCaves =  $this->jsFormat(view('partie.pieJSON', ['participations' => $participations,
-                                                              'pCave' => $pCave, 
-                                                              'titre' => 'Caves en %'])->render());
-        
-        return view('partie.show', ['partie' => $partie, 'jsonCaves' => $jsonCaves]);
+        return view('partie.show', ['partie' => $partie]);
         
         //$participations = Participation::where('partie_id', $partie->id)->with('player')->orderBy('diff');
     }
-    
-    public function showJSON($id){
-        $participations = Participation::where('partie_id', $id)->with('player')->orderBy('diff', 'desc')->get();
-                      
-        $xAxis = [];
-        $caveSerie = [];
-        $resultSerie = [];
-        $diffSerie = [];
         
-        foreach($participations as $p){
-            $xAxis[] = $p->player->nom;
-            $caveSerie[] = intval($p->cave);
-            $resultSerie[] = intval($p->resultat);
-            $diffSerie[] = intval($p->diff);
-        }
-        
-//        var_dump($xAxis);
-//        var_dump($caveSerie);
-//        var_dump($diffSerie);
-//        dd($resultSerie);
-        
-        $ar = ['chart' => ['type' => 'column'], 
-               'xAxis' => ['categories' => $xAxis],
-               'series' => [
-                   ['name' => 'différence', 'data' => $diffSerie],
-                   ['name' => 'cave', 'data' => $caveSerie],
-                   ['name' => 'résultat', 'data' => $resultSerie]
-                ] 
-              ];
-        
-        return response()->json($ar);
-    }
-    
     public function store(){
         $partie = new Partie();
         $partie->lieu = Request::input('lieu');
@@ -92,8 +53,7 @@ class PartieController extends Controller {
                 $participation->save();
             }
         }
-        
-        return $this->show($partie->id);
+        return redirect()->route('ShowPartie', ['id' => $partie->id]);
     }
     
     protected function jsFormat($html){

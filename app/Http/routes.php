@@ -22,10 +22,6 @@ Route::get('players', ['as' => 'IndexPlayer', 'uses' => 'PlayerController@index'
 Route::get('parties/new', ['as' => 'NewPartie', 'uses' => 'PartieController@create']);
 Route::post('parties', ['as' => 'StorePartie', 'uses' => 'PartieController@store']);
 Route::get('parties/{id}', ['as' => 'ShowPartie', 'uses' => 'PartieController@show']);
-Route::get('parties/{id}/json', ['as' => 'ShowPartieJson', 'uses' => 'PartieController@showJSON']);
-Route::get('parties/{id}/json/caves', ['as' => 'ShowCavesPartieJson', 'uses' => 'PartieController@showCavesJSON']);
-Route::get('parties/{id}/json/resultat', ['as' => 'ShowResultatPartieJson', 'uses' => 'PartieController@showResultatsJSON']);
-Route::get('parties/{id}/json/diff', ['as' => 'ShowResultatDiffJson', 'uses' => 'PartieController@showDiffsJSON']);
 Route::get('parties', ['as' => 'IndexPartie', 'uses' => 'PartieController@index']);
 
 Route::get('participation/new/{nb}', ['as' => 'NewParticipation', 'uses' => 'ParticipationController@create']);

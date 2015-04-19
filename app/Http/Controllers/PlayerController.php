@@ -1,7 +1,7 @@
 <?php namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Models\Player;
+use App\Models\Participation;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
@@ -51,7 +51,10 @@ class PlayerController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+            $player = Player::find($id);
+            $participations = Participation::where('player_id', $player->id)->with('partie')->orderBy('created_at')->get();
+            
+            return view('player.show', ['player' => $player, 'participations' => $participations]);
 	}
 
 	/**
